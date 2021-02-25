@@ -16,7 +16,9 @@ namespace Tcp.Net.Utils
     }
     public class Logger
     {
-        private static Channels Channels = Channels.Info | Channels.Warning | Channels.Critical | Channels.Protocol | Channels.Database;
+        private static Channels DefaultChannels = Channels.Info | Channels.Warning | Channels.Critical | Channels.Protocol | Channels.Database;
+
+        private static Channels Channels = DefaultChannels;
 
         private const ConsoleColor Color1 = ConsoleColor.Cyan;
         private const ConsoleColor Color2 = ConsoleColor.DarkCyan;
@@ -36,6 +38,14 @@ namespace Tcp.Net.Utils
         public static void EnableChannel(Channels channels)
         {
             Channels |= channels;
+        }
+        public static void Enable()
+        {
+            Channels = DefaultChannels;
+        }
+        public static void Disable()
+        {
+            Channels = 0x00;
         }
         public static void DisableChannel(Channels channels)
         {
@@ -64,7 +74,10 @@ namespace Tcp.Net.Utils
         }
         public static void NewLine()
         {
-            Console.WriteLine(Environment.NewLine);
+            if (Channels != 0x00)
+            {
+                Console.WriteLine(Environment.NewLine);
+            }
         }
     }
 }

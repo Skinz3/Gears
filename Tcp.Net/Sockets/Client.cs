@@ -132,9 +132,9 @@ namespace Tcp.Net.Sockets
             {
                 m_socket?.BeginReceive(m_buffer, 0, m_buffer.Length, SocketFlags.None, OnReceived, null);
             }
-            catch
+            catch (Exception ex)
             {
-                Logger.Write("Unable to receive from " + Ip, Channels.Warning);
+                Logger.Write(string.Format("Unable to receive from {0} : {1}", Ip, ex), Channels.Warning);
                 Disconnect();
             }
         }
@@ -160,6 +160,7 @@ namespace Tcp.Net.Sockets
             }
             catch (Exception ex)
             {
+                Logger.Write(string.Format("Unable to receive data from ip {0}: {1}", Ip, ex), Channels.Warning);
                 Dispose();
                 OnConnectionClosed();
                 return;

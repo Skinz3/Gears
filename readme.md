@@ -87,4 +87,14 @@ public class HelloServerMessage : Message
 
 ```
 
+* Logging system
+
+```csharp
+Logger.Enable()
+Logger.Disable()
+Logger.DisableChannel(Channels channels)
+Logger.EnableChannel(Channels channels)
+
+```
+
 * Do not hesitate to consult the sample project Tcp.Net.Example for more details 
