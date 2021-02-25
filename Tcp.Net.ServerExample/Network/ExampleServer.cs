@@ -9,17 +9,21 @@ using Tcp.Net.Utils;
 
 namespace Tcp.Net.ServerExample
 {
-    public class ExampleServer : Server
+    public class ExampleServer : Server<ExampleClient>
     {
-        private ConcurrentBag<ExampleClient> _clients
-        {
-            get;
-            set;
-        }
-
         public ExampleServer(string ip, int port) : base(ip, port)
         {
-            this._clients = new ConcurrentBag<ExampleClient>();
+
+        }
+
+        public override ExampleClient CreateClient(Socket socket)
+        {
+            return new ExampleClient(socket);
+        }
+
+        public override void OnClientConnected(ExampleClient client)
+        {
+            Logger.Write("new client connected (" + client.Ip + ")");
         }
 
         public override void OnServerFailedToStart(Exception ex)
@@ -30,14 +34,6 @@ namespace Tcp.Net.ServerExample
         public override void OnServerStarted()
         {
             Logger.Write("Server started " + EndPoint, Channels.Info);
-        }
-
-        public override void OnSocketConnected(Socket socket)
-        {
-            ExampleClient client = new ExampleClient(socket);
-            _clients.Add(client);
-
-            Logger.Write("new client connected (" + client.Ip + ")");
         }
     }
 }

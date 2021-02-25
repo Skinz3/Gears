@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -6,23 +7,39 @@ using System.Text;
 
 namespace Tcp.Net.Sockets
 {
-    public abstract class Server
+    public abstract class Server<T> where T : Client
     {
+        public ConcurrentBag<T> Clients
+        {
+            get;
+            private set;
+        } = new ConcurrentBag<T>();
+
         public Socket Socket
         {
             get;
             private set;
         }
-
         public IPEndPoint EndPoint
         {
             get;
-            set;
+            private set;
         }
-
-        public Server(string ip, int port)
+        public int Backlog
         {
+            get;
+            private set;
+        }
+        public Server(string ip, int port, int backlog = 50)
+        {
+            Backlog = backlog;
             EndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
+        public Server(int port, int backlog = 50)
+        {
+            Backlog = backlog;
+            EndPoint = new IPEndPoint(IPAddress.Any, port);
             Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
         public void Start()
@@ -36,7 +53,7 @@ namespace Tcp.Net.Sockets
                 OnServerFailedToStart(ex);
                 return;
             }
-            Socket.Listen(100);
+            Socket.Listen(Backlog);
             StartAccept(null);
             OnServerStarted();
         }
@@ -68,13 +85,16 @@ namespace Tcp.Net.Sockets
         }
         void ProcessAccept(SocketAsyncEventArgs args)
         {
-            OnSocketConnected(args.AcceptSocket);
+            T client = CreateClient(args.AcceptSocket);
+            Clients.Add(client);
+            OnClientConnected(client);
             StartAccept(args);
         }
 
+        public abstract T CreateClient(Socket socket);
         public abstract void OnServerStarted();
         public abstract void OnServerFailedToStart(Exception ex);
-        public abstract void OnSocketConnected(Socket socket);
+        public abstract void OnClientConnected(T client);
 
 
     }
