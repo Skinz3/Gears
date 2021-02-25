@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tcp.Net.ProtocolExemple\Tcp.Net.ProtocolExample.csproj" />
     <ProjectReference Include="..\Tcp.Net\Tcp.Net.csproj" />
   </ItemGroup>
 

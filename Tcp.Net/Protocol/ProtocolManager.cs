@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 using Tcp.Net.Extensions;
@@ -15,7 +14,7 @@ namespace Tcp.Net.Protocol
     {
         public const string ID_MESSAGE_FIELD_NAME = "Id";
 
-        private static readonly Type[] HandlerMethodParameterTypes = new Type[] { typeof(Message), typeof(TcpClient) };
+        private static readonly Type[] HandlerMethodParameterTypes = new Type[] { typeof(Message), typeof(Client) };
 
         private static readonly Dictionary<ushort, Delegate> Handlers = new Dictionary<ushort, Delegate>();
 
@@ -109,11 +108,11 @@ namespace Tcp.Net.Protocol
         {
             return (ushort)(Messages.Keys.OrderByDescending(x => x).First() + 1);
         }
-        public static bool HandleMessage(Message message, TcpClient client)
+        public static bool HandleMessage(Message message,Client client)
         {
             if (message == null)
             {
-                client.Close();
+                client.Disconnect();
                 return false;
             }
 

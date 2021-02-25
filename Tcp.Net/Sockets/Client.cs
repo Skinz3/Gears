@@ -69,6 +69,7 @@ namespace Tcp.Net.Sockets
             if (message != null)
             {
                 OnMessageReceived(message);
+                ProtocolManager.HandleMessage(message, this);
             }
             else
             {
@@ -95,7 +96,7 @@ namespace Tcp.Net.Sockets
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write("Unable to send message to " + Ip + ".", Channels.Warning);
+                    Logger.Write("Unable to send message to " + Ip + "." + ex, Channels.Warning);
                     Disconnect();
                 }
             }
