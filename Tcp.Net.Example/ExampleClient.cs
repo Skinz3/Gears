@@ -13,7 +13,6 @@ namespace Tcp.Net.Example
         public override void OnConnected()
         {
             Logger.Write("Connected to server !");
-
             this.Send(new HelloServerMessage("test", "test@example.com"));
         }
 
