@@ -10,7 +10,7 @@ namespace Tcp.Net.ServerExample.Handlers
     class HelloHandler
     {
         [MessageHandler]
-        public static void HandleHelloServerMessage(HelloServerMessage message, ExampleClient client)
+        public static void HandleHelloServerMessage(HelloServerMessage message, MyClient client)
         {
             client.Send(new HelloClientMessage("Hello client !"));
         }

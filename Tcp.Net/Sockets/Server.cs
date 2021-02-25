@@ -7,13 +7,13 @@ using System.Text;
 
 namespace Tcp.Net.Sockets
 {
-    public abstract class Server<T> where T : Client
+    public abstract class Server<TClient> where TClient : Client
     {
-        public ConcurrentBag<T> Clients
+        public ConcurrentBag<TClient> Clients
         {
             get;
             private set;
-        } = new ConcurrentBag<T>();
+        } = new ConcurrentBag<TClient>();
 
         public Socket Socket
         {
@@ -85,16 +85,16 @@ namespace Tcp.Net.Sockets
         }
         void ProcessAccept(SocketAsyncEventArgs args)
         {
-            T client = CreateClient(args.AcceptSocket);
+            TClient client = CreateClient(args.AcceptSocket);
             Clients.Add(client);
             OnClientConnected(client);
             StartAccept(args);
         }
 
-        public abstract T CreateClient(Socket socket);
+        public abstract TClient CreateClient(Socket socket);
         public abstract void OnServerStarted();
         public abstract void OnServerFailedToStart(Exception ex);
-        public abstract void OnClientConnected(T client);
+        public abstract void OnClientConnected(TClient client);
 
 
     }

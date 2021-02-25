@@ -8,23 +8,18 @@ using Tcp.Net.Utils;
 
 namespace Tcp.Net.ServerExample
 {
-    public class ExampleClient : Client
+    public class MyClient : Client
     {
-        public ExampleClient(Socket socket) : base(socket)
+        public MyClient(Socket socket) : base(socket)
         {
 
         }
-        public override void OnConnected()
-        {
-
-        }
-
-        public override void OnConnectionClosed()
+        public override void OnConnect()
         {
 
         }
 
-        public override void OnDisconnected()
+        public override void OnDisconnect()
         {
 
         }

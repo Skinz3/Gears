@@ -52,11 +52,9 @@ namespace Tcp.Net.Sockets
             BeginReceive();
         }
 
-        public abstract void OnConnectionClosed();
+        public abstract void OnDisconnect();
 
-        public abstract void OnConnected();
-
-        public abstract void OnDisconnected();
+        public abstract void OnConnect();
 
         public abstract void OnMessageReceived(Message message);
 
@@ -119,7 +117,7 @@ namespace Tcp.Net.Sockets
             {
                 m_socket.EndConnect(result);
                 BeginReceive();
-                OnConnected();
+                OnConnect();
             }
             catch (Exception ex)
             {
@@ -153,16 +151,24 @@ namespace Tcp.Net.Sockets
                 if (size == 0)
                 {
                     Dispose();
-                    OnConnectionClosed();
+                    OnDisconnect();
                     return;
                 }
 
             }
-            catch (Exception ex)
+            catch (SocketException ex)
             {
+                switch (ex.SocketErrorCode)
+                {
+                    case SocketError.ConnectionReset:
+                        Dispose();
+                        OnDisconnect();
+                        return;
+                }
+
                 Logger.Write(string.Format("Unable to receive data from ip {0}: {1}", Ip, ex), Channels.Warning);
                 Dispose();
-                OnConnectionClosed();
+                OnDisconnect();
                 return;
             }
 
@@ -174,7 +180,6 @@ namespace Tcp.Net.Sockets
             if (m_socket != null)
             {
                 Dispose();
-                OnDisconnected();
             }
         }
 

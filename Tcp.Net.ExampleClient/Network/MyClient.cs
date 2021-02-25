@@ -6,24 +6,19 @@ using Tcp.Net.ProtocolExample.Client;
 using Tcp.Net.Sockets;
 using Tcp.Net.Utils;
 
-namespace Tcp.Net.Example
+namespace Tcp.Net.ExampleClient
 {
-    public class ExampleClient : Client
+    public class MyClient : Client
     {
-        public override void OnConnected()
+        public override void OnConnect()
         {
             Logger.Write("Connected to server !");
             this.Send(new HelloServerMessage("test", "test@example.com"));
         }
 
-        public override void OnConnectionClosed()
+        public override void OnDisconnect()
         {
-            Logger.Write("Connection closed !");
-        }
-
-        public override void OnDisconnected()
-        {
-            throw new NotImplementedException();
+            Logger.Write("Connection closed by server.");
         }
 
         public override void OnFailToConnect(Exception ex)

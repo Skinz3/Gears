@@ -9,19 +9,19 @@ using Tcp.Net.Utils;
 
 namespace Tcp.Net.ServerExample
 {
-    public class ExampleServer : Server<ExampleClient>
+    public class MyServer : Server<MyClient>
     {
-        public ExampleServer(string ip, int port) : base(ip, port)
+        public MyServer(string ip, int port) : base(ip, port)
         {
 
         }
 
-        public override ExampleClient CreateClient(Socket socket)
+        public override MyClient CreateClient(Socket socket)
         {
-            return new ExampleClient(socket);
+            return new MyClient(socket);
         }
 
-        public override void OnClientConnected(ExampleClient client)
+        public override void OnClientConnected(MyClient client)
         {
             Logger.Write("new client connected (" + client.Ip + ")");
         }

@@ -15,9 +15,11 @@ namespace Tcp.Net.ServerExample
 
         static void Main(string[] args)
         {
+            Console.Title = "Example Server";
+
             ProtocolManager.Initialize(Assembly.GetAssembly(typeof(HelloServerMessage)), Assembly.GetExecutingAssembly());
 
-            ExampleServer server = new ExampleServer(Ip, Port);
+            MyServer server = new MyServer(Ip, Port);
             server.Start();
 
             Console.ReadLine();
