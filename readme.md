@@ -17,33 +17,28 @@ public static void HandleHelloMessage(HelloMessage message, MyClient client)
 
 ```csharp
 
-static void main(string[] args)
+static void Main(string[] args)
 {
     MyClient client = new MyClient();
     client.Connect("127.0.0.1", 500);
 }
 public class MyClient : Client
 {
-    public override void OnConnected()
+    public override void OnConnect()
     {
-        Console.WriteLine("Connected to server");
+        Logger.Write("Connected to server");
     }
-
-    public override void OnConnectionClosed()
+    public override void OnDisconnect()
     {
-        Console.WriteLine("Connection closed by server.");
-    }
-    public override void OnDisconnected()
-    {
-        Console.WriteLine("Connection closed by self.");
+        Logger.Write("Connection closed.");
     }
     public override void OnFailToConnect(Exception ex)
     {
-        Console.WriteLine("Unable to connect to server.");
+        Logger.Write("Unable to connect to server.");
     }
     public override void OnMessageReceived(Message message)
     {
-          Console.WriteLine("Received " + message);
+        Logger.Write("Received " + message);
     }
     public override void OnSended(IAsyncResult result)
     {
@@ -76,13 +71,13 @@ public class HelloServerMessage : Message
     }
     public override void Deserialize(BinaryReader reader)
     {
-            this.username = reader.ReadString();
-            this.mail = reader.ReadString();
+        this.username = reader.ReadString();
+        this.mail = reader.ReadString();
     }
     public override void Serialize(BinaryWriter writer)
     {
-            writer.Write(username);
-            writer.Write(mail);
+        writer.Write(username);
+        writer.Write(mail);
     }
 
 ```
@@ -94,7 +89,6 @@ Logger.Enable()
 Logger.Disable()
 Logger.DisableChannel(Channels channels)
 Logger.EnableChannel(Channels channels)
-
 ```
 
-* Do not hesitate to consult the sample project Tcp.Net.Example for more details 
+* Do not hesitate to consult the sample project ``Tcp.Net.ExampleClient`` & ``Tcp.Net.ExampleServer`` for more details 
