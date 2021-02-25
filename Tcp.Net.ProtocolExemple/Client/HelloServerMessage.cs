@@ -9,7 +9,6 @@ namespace Tcp.Net.ProtocolExample.Client
     public class HelloServerMessage : Message
     {
         public const ushort Id = 1;
-
         public override ushort MessageId => Id;
 
         public string username;

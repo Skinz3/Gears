@@ -1,6 +1,6 @@
 # Welcome to Tcp.Net
 
-* Tcp.Net is a TCP asynchronous networking library written in C# .NET Core 3.1
+* Tcp.Net is a TCP asynchronous networking library, small and lightweight written in C# .NET Core 3.1
 
 # Features
 
@@ -35,7 +35,7 @@ public class MyClient : Client
     }
     public override void OnDisconnected()
     {
-        Console.WriteLine("Connection closed by client.");
+        Console.WriteLine("Connection closed by self.");
     }
     public override void OnFailToConnect(Exception ex)
     {
@@ -52,3 +52,39 @@ public class MyClient : Client
 }
 
 ```
+
+* Clean and modular protocol implementation
+
+```csharp
+
+public class HelloServerMessage : Message
+{
+    public const ushort Id = 1;
+    public override ushort MessageId => Id;
+
+    public string username;
+    public string mail;
+
+    public HelloServerMessage(string userName,string mail)
+    {
+        this.username = userName;
+        this.mail = mail;
+    }
+    public HelloServerMessage()
+    {
+
+    }
+    public override void Deserialize(BinaryReader reader)
+    {
+            this.username = reader.ReadString();
+            this.mail = reader.ReadString();
+    }
+    public override void Serialize(BinaryWriter writer)
+    {
+            writer.Write(username);
+            writer.Write(mail);
+    }
+
+```
+
+* Do not hesitate to consult the sample project Tcp.Net.Example for more details 
