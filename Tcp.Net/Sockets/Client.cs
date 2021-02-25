@@ -12,8 +12,6 @@ namespace Tcp.Net.Sockets
 {
     public abstract class Client
     {
-        public const int BUFFER_LENGTH = 8192;
-
         private Socket m_socket;
 
         private byte[] m_buffer;
@@ -40,14 +38,14 @@ namespace Tcp.Net.Sockets
             }
         }
 
-        public Client()
+        public Client(int bufferLength = 512)
         {
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            m_buffer = new byte[BUFFER_LENGTH];
+            m_buffer = new byte[bufferLength];
         }
-        public Client(Socket socket)
+        public Client(Socket socket, int bufferLength = 512)
         {
-            this.m_buffer = new byte[BUFFER_LENGTH];
+            this.m_buffer = new byte[bufferLength];
             this.m_socket = socket;
             BeginReceive();
         }

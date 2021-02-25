@@ -9,12 +9,6 @@ namespace Tcp.Net.Sockets
 {
     public abstract class Server<TClient> where TClient : Client
     {
-        public ConcurrentBag<TClient> Clients
-        {
-            get;
-            private set;
-        } = new ConcurrentBag<TClient>();
-
         public Socket Socket
         {
             get;
@@ -86,7 +80,6 @@ namespace Tcp.Net.Sockets
         void ProcessAccept(SocketAsyncEventArgs args)
         {
             TClient client = CreateClient(args.AcceptSocket);
-            Clients.Add(client);
             OnClientConnected(client);
             StartAccept(args);
         }
