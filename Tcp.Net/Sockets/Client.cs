@@ -16,28 +16,12 @@ namespace Tcp.Net.Sockets
 
         private byte[] m_buffer;
 
-        public IPEndPoint EndPoint
-        {
-            get
-            {
-                return m_socket.RemoteEndPoint as IPEndPoint;
-            }
-        }
-        public string Ip
-        {
-            get
-            {
-                return EndPoint.Address.ToString();
-            }
-        }
-        public bool Connected
-        {
-            get
-            {
-                return m_socket != null && m_socket.Connected;
-            }
-        }
+        public IPEndPoint EndPoint => (IPEndPoint)m_socket.RemoteEndPoint;
 
+        public IPAddress IPAddress => EndPoint.Address;
+
+        public bool Connected => m_socket != null && m_socket.Connected;
+        
         public Client(int bufferLength = 512)
         {
             m_socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -92,7 +76,7 @@ namespace Tcp.Net.Sockets
                 }
                 catch (Exception ex)
                 {
-                    Logger.Write("Unable to send message to " + Ip + "." + ex, Channels.Warning);
+                    Logger.Write("Unable to send message to " + IPAddress + "." + ex, Channels.Warning);
                     Disconnect();
                 }
             }
@@ -130,7 +114,7 @@ namespace Tcp.Net.Sockets
             }
             catch (Exception ex)
             {
-                Logger.Write(string.Format("Unable to receive from {0} : {1}", Ip, ex), Channels.Warning);
+                Logger.Write(string.Format("Unable to receive from {0} : {1}", IPAddress, ex), Channels.Warning);
                 Disconnect();
             }
         }
@@ -164,7 +148,7 @@ namespace Tcp.Net.Sockets
                         return;
                 }
 
-                Logger.Write(string.Format("Unable to receive data from ip {0}: {1}", Ip, ex), Channels.Warning);
+                Logger.Write(string.Format("Unable to receive data from ip {0}: {1}", IPAddress, ex), Channels.Warning);
                 Dispose();
                 OnDisconnect();
                 return;
