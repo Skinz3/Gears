@@ -12,43 +12,41 @@ namespace Tcp.Net.Protocol
 {
     public class ProtocolManager
     {
-        public const string ID_MESSAGE_FIELD_NAME = "Id";
+        public const string MessageIdTargetField = "Id";
 
-        private static readonly Type[] HandlerMethodParameterTypes = new Type[] { typeof(Message), typeof(Client) };
+        private static readonly Type[] _handlerParameterTypes = new Type[] { typeof(Message), typeof(Client) };
 
-        private static readonly Dictionary<ushort, Delegate> Handlers = new Dictionary<ushort, Delegate>();
+        private static readonly Dictionary<ushort, Delegate> _handlers = new Dictionary<ushort, Delegate>();
 
-        private static readonly Dictionary<ushort, Type> Messages = new Dictionary<ushort, Type>();
+        private static readonly Dictionary<ushort, Type> _messages = new Dictionary<ushort, Type>();
 
-        private static readonly Dictionary<ushort, Func<Message>> Constructors = new Dictionary<ushort, Func<Message>>();
+        private static readonly Dictionary<ushort, Func<Message>> _ctors = new Dictionary<ushort, Func<Message>>();
 
-        public static Logger logger = new Logger();
-
-        public static bool Initialized;
+        public static bool _initialized;
 
         public static void Initialize(Assembly messagesAssembly, Assembly handlersAssembly)
         {
             foreach (var type in messagesAssembly.GetTypes().Where(x => x.IsSubclassOf(typeof(Message))))
             {
-                FieldInfo field = type.GetField(ID_MESSAGE_FIELD_NAME);
+                FieldInfo field = type.GetField(MessageIdTargetField);
 
                 if (field != null)
                 {
                     ushort num = (ushort)field.GetValue(type);
-                    if (Messages.ContainsKey(num))
+                    if (_messages.ContainsKey(num))
                     {
                         throw new AmbiguousMatchException(string.Format("MessageReceiver() => {0} item is already in the dictionary, old type is : {1}, new type is  {2}",
-                            num, Messages[num], type));
+                            num, _messages[num], type));
                     }
 
-                    Messages.Add(num, type);
+                    _messages.Add(num, type);
 
                     ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
                     if (constructor == null)
                     {
                         throw new Exception(string.Format("'{0}' doesn't implemented a parameterless constructor", type));
                     }
-                    Constructors.Add(num, constructor.CreateDelegate<Func<Message>>());
+                    _ctors.Add(num, constructor.CreateDelegate<Func<Message>>());
                 }
             }
 
@@ -65,9 +63,9 @@ namespace Tcp.Net.Protocol
                         {
                             try
                             {
-                                Delegate target = subItem.CreateDelegate(HandlerMethodParameterTypes);
+                                Delegate target = subItem.CreateDelegate(_handlerParameterTypes);
                                 FieldInfo field = methodParameters.GetField("Id");
-                                Handlers.Add((ushort)field.GetValue(null), target);
+                                _handlers.Add((ushort)field.GetValue(null), target);
                             }
                             catch
                             {
@@ -80,23 +78,18 @@ namespace Tcp.Net.Protocol
                 }
             }
 
-            Logger.Write(Messages.Count + " Message(s) Loaded | " + Handlers.Count + " Handler(s) Loaded");
+            Logger.Write(_messages.Count + " Message(s) Loaded | " + _handlers.Count + " Handler(s) Loaded");
 
-            Initialized = true;
+            _initialized = true;
         }
-        /// <summary>
-        /// Unpack message
-        /// </summary>
-        /// <param name="id">Id of the message</param>
-        /// <param name="reader">Reader with the message datas</param>
-        /// <returns></returns>
+
         private static Message ConstructMessage(ushort id, BinaryReader reader)
         {
-            if (!Messages.ContainsKey(id))
+            if (!_messages.ContainsKey(id))
             {
                 return null;
             }
-            Message message = Constructors[id]();
+            Message message = _ctors[id]();
             if (message == null)
             {
                 return null;
@@ -106,7 +99,7 @@ namespace Tcp.Net.Protocol
         }
         public static ushort GetNextMessageId()
         {
-            return (ushort)(Messages.Keys.OrderByDescending(x => x).First() + 1);
+            return (ushort)(_messages.Keys.OrderByDescending(x => x).First() + 1);
         }
         public static bool HandleMessage(Message message,Client client)
         {
@@ -117,7 +110,7 @@ namespace Tcp.Net.Protocol
             }
 
             Delegate handler = null;
-            Handlers.TryGetValue(message.MessageId, out handler);
+            _handlers.TryGetValue(message.MessageId, out handler);
 
             if (handler != null)
             {
