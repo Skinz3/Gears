@@ -1,6 +1,6 @@
 # Welcome to Tcp.Net
 
-* Tcp.Net is a TCP asynchronous networking library, small and lightweight written in C# .NET Core 3.1
+* Tcp.Net is a small and lightweight networking library (TCP), written in C# .NET Core 3.1
 
 # Features
 
