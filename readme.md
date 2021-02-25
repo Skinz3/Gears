@@ -4,7 +4,7 @@
 
 # Features
 
-* Automatic message handler - method binding
+* Smart message handler bindings
 
 ```csharp
 [MessageHandler]
