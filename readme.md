@@ -78,7 +78,7 @@ public class HelloServerMessage : Message
 [MessageHandler]
 public static void HandleHelloMessage(HelloMessage message, MyClient client)
 {
-    Console.WriteLine("The client username is " + message.username);
+    // handle HelloMessage
 }
 ```
 * Logging system
