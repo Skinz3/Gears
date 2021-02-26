@@ -4,15 +4,6 @@
 
 # Features
 
-* Smart message handler bindings
-
-```csharp
-[MessageHandler]
-public static void HandleHelloMessage(HelloMessage message, MyClient client)
-{
-    Console.WriteLine("The client username is " + message.username);
-}
-```
 * High level socket API
 
 ```csharp
@@ -81,7 +72,15 @@ public class HelloServerMessage : Message
     }
 
 ```
+* Smart message handler bindings
 
+```csharp
+[MessageHandler]
+public static void HandleHelloMessage(HelloMessage message, MyClient client)
+{
+    Console.WriteLine("The client username is " + message.username);
+}
+```
 * Logging system
 
 ```csharp
