@@ -22,7 +22,7 @@ namespace Tcp.Net.Protocol
 
         private static readonly Dictionary<ushort, Func<Message>> _ctors = new Dictionary<ushort, Func<Message>>();
 
-        public static bool _initialized;
+        public static bool _initialized = false;
 
         public static void Initialize(Assembly messagesAssembly, Assembly handlersAssembly)
         {
@@ -97,12 +97,12 @@ namespace Tcp.Net.Protocol
             message.Unpack(reader);
             return message;
         }
-        public static ushort GetNextMessageId()
+        public static bool HandleMessage(Message message, Client client)
         {
-            return (ushort)(_messages.Keys.OrderByDescending(x => x).First() + 1);
-        }
-        public static bool HandleMessage(Message message,Client client)
-        {
+            if (!_initialized)
+            {
+                throw new UnauthorizedAccessException("This function cannot be used until ProtocolManager.Intitialize() has been called.");
+            }
             if (message == null)
             {
                 client.Disconnect();
@@ -135,6 +135,11 @@ namespace Tcp.Net.Protocol
 
         public static Message BuildMessage(byte[] buffer)
         {
+            if (!_initialized)
+            {
+                throw new UnauthorizedAccessException("This function cannot be used until ProtocolManager.Intitialize() has been called.");
+            }
+
             using (MemoryStream stream = new MemoryStream(buffer))
             {
                 using (BinaryReader reader = new BinaryReader(stream))
