@@ -23,12 +23,12 @@ namespace Tcp.Net.ServerExample
 
         public override void OnClientConnected(MyClient client)
         {
-            Logger.Write("new client connected (" + client.Ip + ")");
+            Logger.Write("new client connected (" + client.IPAddress + ")");
         }
 
         public override void OnServerFailedToStart(Exception ex)
         {
-            Logger.Write("Unable to start server : " + ex);
+            Logger.Write("Unable to start server : " + ex, Channels.Warning);
         }
 
         public override void OnServerStarted()

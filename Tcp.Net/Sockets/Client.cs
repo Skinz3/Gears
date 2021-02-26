@@ -132,8 +132,8 @@ namespace Tcp.Net.Sockets
 
                 if (size == 0)
                 {
-                    Dispose();
                     OnDisconnect();
+                    Dispose();
                     return;
                 }
 
@@ -143,14 +143,14 @@ namespace Tcp.Net.Sockets
                 switch (ex.SocketErrorCode)
                 {
                     case SocketError.ConnectionReset:
-                        Dispose();
                         OnDisconnect();
+                        Dispose();
                         return;
                 }
 
                 Logger.Write(string.Format("Unable to receive data from ip {0}: {1}", IPAddress, ex), Channels.Warning);
-                Dispose();
                 OnDisconnect();
+                Dispose();
                 return;
             }
 

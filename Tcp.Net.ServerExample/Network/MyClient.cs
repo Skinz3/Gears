@@ -21,7 +21,7 @@ namespace Tcp.Net.ServerExample
 
         public override void OnDisconnect()
         {
-
+            Logger.Write("Client disconnected " + IPAddress);
         }
 
         public override void OnFailToConnect(Exception ex)
