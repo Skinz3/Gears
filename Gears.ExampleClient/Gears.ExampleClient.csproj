@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Gears.ExampleProtocol\Gears.ExampleProtocol.csproj" />
-    <ProjectReference Include="..\Gears.ProtocolExemple\Gears.ExampleProtocol.csproj" />
     <ProjectReference Include="..\Gears\Gears.csproj" />
   </ItemGroup>
 
