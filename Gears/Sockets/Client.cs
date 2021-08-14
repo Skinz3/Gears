@@ -45,6 +45,10 @@ namespace Gears.Sockets
 
         public abstract void OnSend(IAsyncResult result);
 
+        /*
+         * Build a message from the received buffer.
+         * If the message is valid, automatically calls the handler 
+         */
         private void OnDataArrival(int dataSize)
         {
             Message message = ProtocolManager.BuildMessage(m_buffer);
@@ -60,9 +64,12 @@ namespace Gears.Sockets
             }
         }
 
+        /*
+         * Send a message to the server. The socket must be connected 
+         */
         public void Send(Message message)
         {
-            if (m_socket == null || !m_socket.Connected)
+            if (!Connected)
             {
                 Logger.Write("Attempt to send message to invalid socket.", Channels.Warning);
                 return;
@@ -87,7 +94,11 @@ namespace Gears.Sockets
             }
 
         }
-
+        /*
+         *  Establishes a TCP connection with the server on the specified endpoint 
+         *  OnConnect() is called when connected.
+         *  OnError() is called on fail to connect.
+         */
         public void Connect(string host, int port)
         {
             m_socket?.BeginConnect(new IPEndPoint(IPAddress.Parse(host), port), new AsyncCallback(OnConnectionResulted), m_socket);
