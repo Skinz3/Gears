@@ -65,8 +65,27 @@ public class HelloServerMessage : Message
 * Smart message handler bindings
 
 ```csharp
+
+/*
+This code is client side
+*/
+static void Main(string[] args) 
+{
+    MyClient client = new MyClient();
+
+    client.Connect("127.0.0.1",500);
+
+    client.OnConnected += () =>
+    {
+        client.Send(new HelloMessage("Hi server!"));
+    }
+}
+
+/*
+This code is server side
+*/
 [MessageHandler]
-public static void HandleHelloMessage(HelloMessage message, MyClient client)
+public static void HandleHelloMessage(HelloMessage message, MyClient client) 
 {
     // handle HelloMessage
 }
