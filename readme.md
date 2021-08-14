@@ -43,7 +43,7 @@ public class HelloServerMessage : Message
     {
         // Empty constructor is for json deserialization
     }
-
+}
 ```
 * Smart message handler bindings
 
