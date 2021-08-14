@@ -15,26 +15,11 @@ static void Main(string[] args)
 }
 public class MyClient : Client
 {
-    public override void OnConnect()
-    {
-        Logger.Write("Connected to server");
-    }
-    public override void OnDisconnect()
-    {
-        Logger.Write("Connection closed.");
-    }
-    public override void OnError(Exception ex)
-    {
-        Logger.Write("Unable to connect to server.");
-    }
-    public override void OnReceive(Message message)
-    {
-        Logger.Write("Received " + message);
-    }
-    public override void OnSend(IAsyncResult result)
-    {
-        Logger.Write("Sended " + result.AsyncState);
-    }
+    public override void OnConnect();
+    public override void OnDisconnect();
+    public override void OnError(Exception ex);
+    public override void OnReceive(Message message);
+    public override void OnSend(IAsyncResult result);
 }
 
 ```
@@ -48,17 +33,15 @@ public class HelloServerMessage : Message
     public const ushort Id = 1;
     public override ushort MessageId => Id;
 
-    public string Username;
-    public string Mail;
+    public string Content;
 
-    public HelloServerMessage(string userName,string mail)
+    public HelloServerMessage(string content)
     {
-        this.Username = userName;
-        this.Mail = mail;
+        this.Content = content;
     }
     public HelloServerMessage()
     {
-
+        // Empty constructor is for json deserialization
     }
 
 ```
@@ -87,7 +70,7 @@ This code is server side
 [MessageHandler]
 public static void HandleHelloMessage(HelloMessage message, MyClient client) 
 {
-    // handle HelloMessage
+    Console.WriteLine(message.Content); // 'Hi server!'
 }
 ```
 * Logging system
