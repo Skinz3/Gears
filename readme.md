@@ -10,7 +10,8 @@
 
 static void Main(string[] args)
 {
-    ProtocolManager.Initialize(Assembly.GetAssembly(typeof(HelloServerMessage)), Assembly.GetExecutingAssembly());
+    ProtocolManager.Initialize(Assembly.GetAssembly(typeof(HelloMessage)), Assembly.GetExecutingAssembly());
+
     MyClient client = new MyClient();
     client.Connect("127.0.0.1", 500);
 }
@@ -55,8 +56,8 @@ This code is client side
 */
 static void Main(string[] args) 
 {
-    ProtocolManager.Initialize(Assembly.GetAssembly(typeof(HelloServerMessage)), Assembly.GetExecutingAssembly());
-    
+    ProtocolManager.Initialize(Assembly.GetAssembly(typeof(HelloMessage)), Assembly.GetExecutingAssembly());
+
     MyClient client = new MyClient();
 
     client.Connect("127.0.0.1",500);
