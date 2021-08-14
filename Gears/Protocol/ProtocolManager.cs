@@ -23,6 +23,9 @@ namespace Gears.Protocol
 
         public static bool _initialized = false;
 
+        /*
+         * Initialize protocol, (create binding)
+         */
         public static void Initialize(Assembly messagesAssembly, Assembly handlersAssembly)
         {
             foreach (var type in messagesAssembly.GetTypes().Where(x => x.IsSubclassOf(typeof(Message))))
