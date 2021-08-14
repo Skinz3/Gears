@@ -1,6 +1,6 @@
-# Welcome to Tcp.Net
+# Welcome to Gears
 
-* Tcp.Net is a small and lightweight networking library (TCP), written in C# .NET Core 3.1
+* Gears is a small and lightweight networking library over TCP, written in C# .NET Core 3.1
 
 # Features
 
@@ -23,15 +23,15 @@ public class MyClient : Client
     {
         Logger.Write("Connection closed.");
     }
-    public override void OnFailToConnect(Exception ex)
+    public override void OnError(Exception ex)
     {
         Logger.Write("Unable to connect to server.");
     }
-    public override void OnMessageReceived(Message message)
+    public override void OnReceive(Message message)
     {
         Logger.Write("Received " + message);
     }
-    public override void OnSended(IAsyncResult result)
+    public override void OnSend(IAsyncResult result)
     {
         Logger.Write("Sended " + result.AsyncState);
     }
@@ -48,27 +48,17 @@ public class HelloServerMessage : Message
     public const ushort Id = 1;
     public override ushort MessageId => Id;
 
-    public string username;
-    public string mail;
+    public string Username;
+    public string Mail;
 
     public HelloServerMessage(string userName,string mail)
     {
-        this.username = userName;
-        this.mail = mail;
+        this.Username = userName;
+        this.Mail = mail;
     }
     public HelloServerMessage()
     {
 
-    }
-    public override void Deserialize(BinaryReader reader)
-    {
-        this.username = reader.ReadString();
-        this.mail = reader.ReadString();
-    }
-    public override void Serialize(BinaryWriter writer)
-    {
-        writer.Write(username);
-        writer.Write(mail);
     }
 
 ```
@@ -90,4 +80,4 @@ Logger.DisableChannel(Channels channels)
 Logger.EnableChannel(Channels channels)
 ```
 
-* Do not hesitate to consult the sample project ``Tcp.Net.ExampleClient`` & ``Tcp.Net.ExampleServer`` for more details 
+* Do not hesitate to consult the sample project ``Gears.ExampleClient`` & ``Gears.ExampleServer`` for more details 

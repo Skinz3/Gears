@@ -21,17 +21,17 @@ namespace Gears.ExampleClient
             Logger.Write("Connection closed by server.");
         }
 
-        public override void OnFailToConnect(Exception ex)
+        public override void OnError(Exception ex)
         {
             Logger.Write("Unable to connect to server.");
         }
 
-        public override void OnMessageReceived(Message message)
+        public override void OnReceive(Message message)
         {
             Logger.Write("Received " + message, Channels.Protocol);
         }
 
-        public override void OnSended(IAsyncResult result)
+        public override void OnSend(IAsyncResult result)
         {
             Logger.Write("Sended " + result.AsyncState, Channels.Protocol);
         }

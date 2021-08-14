@@ -39,9 +39,11 @@ namespace Gears.Sockets
 
         public abstract void OnConnect();
 
-        public abstract void OnMessageReceived(Message message);
+        public abstract void OnReceive(Message message);
 
-        public abstract void OnFailToConnect(Exception ex);
+        public abstract void OnError(Exception ex);
+
+        public abstract void OnSend(IAsyncResult result);
 
         private void OnDataArrival(int dataSize)
         {
@@ -49,7 +51,7 @@ namespace Gears.Sockets
 
             if (message != null)
             {
-                OnMessageReceived(message);
+                OnReceive(message);
                 ProtocolManager.HandleMessage(message, this);
             }
             else
@@ -74,7 +76,7 @@ namespace Gears.Sockets
                     {
                         message.Serialize(writer);
                         var data = stream.GetBuffer();
-                        m_socket.BeginSend(data, 0, data.Length, SocketFlags.None, OnSended, message);
+                        m_socket.BeginSend(data, 0, data.Length, SocketFlags.None, OnSend, message);
                     }
                 }
             }
@@ -85,7 +87,6 @@ namespace Gears.Sockets
             }
 
         }
-        public abstract void OnSended(IAsyncResult result);
 
         public void Connect(string host, int port)
         {
@@ -102,7 +103,7 @@ namespace Gears.Sockets
             }
             catch (Exception ex)
             {
-                OnFailToConnect(ex);
+                OnError(ex);
             }
         }
         private void BeginReceive()
