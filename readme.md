@@ -1,6 +1,8 @@
 # Welcome to Gears
 
 * Gears is a small and lightweight networking library over TCP, written in C# .NET Core 3.1
+* It provide high level socket api and smart packet handling for a clean network architecture.
+* You can download a stable release on this repo.
 
 # Features
 
@@ -66,18 +68,23 @@ public class MyClient : Client
     public override void OnConnect()
     {
         Console.WriteLine("Connected to server !");
-        this.Send(new HelloServerMessage("test", "test@example.com"));
+        this.Send(new HelloMessage("Hi server!"));
     }
 }
 
-/*
-This code is server side
-*/
-[MessageHandler]
-public static void HandleHelloMessage(HelloMessage message, MyClient client) 
+
+class MyMessagesHandlers
 {
-    Console.WriteLine(message.Content); // 'Hi server!'
+    /*
+        This code is server side. The method will be automatically invoked when receiving 'HelloMessage'.
+    */
+    [MessageHandler]
+    public static void HandleHelloMessage(HelloMessage message, MyClient client) 
+    {
+        Console.WriteLine(message.Content); // "Hi server!"
+    }
 }
+
 ```
 * Logging system
 
