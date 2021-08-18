@@ -25,6 +25,8 @@ namespace Gears.Protocol
 
         /*
          * Initialize protocol, (create binding)
+         * messagesAssembly : The assembly where is located your protocol classes.
+         * handlersAssembly : The assembly where is located your methods to handle messages.
          */
         public static void Initialize(Assembly messagesAssembly, Assembly handlersAssembly)
         {
@@ -85,7 +87,6 @@ namespace Gears.Protocol
 
             _initialized = true;
         }
-
       
         public static bool HandleMessage(Message message, Client client)
         {

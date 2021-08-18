@@ -25,9 +25,7 @@ public class MyClient : Client
 }
 
 ```
-
 * Clean and modular protocol implementation
-
 ```csharp
 
 public class HelloServerMessage : Message
@@ -61,10 +59,14 @@ static void Main(string[] args)
     MyClient client = new MyClient();
 
     client.Connect("127.0.0.1",500);
-
-    client.OnConnected += () =>
+}
+public class MyClient : Client
+{
+    // ...
+    public override void OnConnect()
     {
-        client.Send(new HelloMessage("Hi server!"));
+        Console.WriteLine("Connected to server !");
+        this.Send(new HelloServerMessage("test", "test@example.com"));
     }
 }
 
