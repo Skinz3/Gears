@@ -19,6 +19,7 @@ namespace Gears.ServerExample
 
             ProtocolManager.Initialize(Assembly.GetAssembly(typeof(HelloServerMessage)), Assembly.GetExecutingAssembly());
 
+
             MyServer server = new MyServer(Ip, Port);
             server.Start();
 
