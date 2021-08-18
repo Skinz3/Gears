@@ -1,6 +1,7 @@
 # Welcome to Gears
 
 ![example workflow](https://github.com/Skinz3/Gears/actions/workflows/dotnet-desktop.yml/badge.svg)
+[![Github All Releases](https://img.shields.io/github/downloads/Skinz3/Gears/total.svg)]()
 
 * Gears is a small and lightweight networking library over TCP, written in C# .NET Core 3.1
 * It provide high level socket api and smart packet handling for a clean network architecture.
