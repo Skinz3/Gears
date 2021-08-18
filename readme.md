@@ -6,7 +6,7 @@
 
 # Features
 
-* High level socket API
+## High level socket API
 
 ```csharp
 
@@ -27,7 +27,7 @@ public class MyClient : Client
 }
 
 ```
-* Clean and modular protocol implementation
+## Clean and modular protocol implementation
 ```csharp
 
 public class HelloServerMessage : Message
@@ -47,7 +47,7 @@ public class HelloServerMessage : Message
     }
 }
 ```
-* Smart message handler bindings
+## Smart message handler bindings
 
 ```csharp
 
@@ -86,7 +86,7 @@ class MyMessagesHandlers
 }
 
 ```
-* Logging system
+## Logging system
 
 ```csharp
 Logger.Enable()
